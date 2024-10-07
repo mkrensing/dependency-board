@@ -159,6 +159,7 @@ draggables.forEach((task) => {
   });
   task.addEventListener("dragend", () => {
     task.classList.remove("is-dragging");
+    adjustFastLaneHeights();
   });
 });
 
@@ -205,12 +206,41 @@ const insertAboveTask = (zone, mouseY) => {
 
   return closestTask;
 };
+
+// Function to adjust Fast Lane heights
+function adjustFastLaneHeights() {
+  const fastLanes = document.querySelectorAll(".fast-lane");
+  let maxHeight = 0;
+
+  // remove the max height to all fast-lane areas
+  fastLanes.forEach(lane => {
+    lane.style.height = "auto";
+  });
+
+  // Determine the max height
+  fastLanes.forEach(lane => {
+    const laneHeight = lane.scrollHeight;
+    if (laneHeight > maxHeight) {
+      maxHeight = laneHeight;
+    }
+  });
+
+  // Set the max height to all fast-lane areas
+  fastLanes.forEach(lane => {
+    lane.style.height = `${maxHeight}px`;
+  });
+}
+
         }
       
     </script>
   </head>
   <body onload="init()">
     <div class="board">
+      <form id="todo-form">
+        <input type="text" placeholder="New TODO..." id="todo-input" />
+        <button type="submit">Add +</button>
+      </form>
 
       <div class="lanes">
         <div class="swim-lane" id="todo-lane">
